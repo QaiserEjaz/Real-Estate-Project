@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-function auth(requiredRole) {
+function auth(requiredRoles) {
   return (req, res, next) => {
     const token = req.header("Authorization")?.replace("Bearer ", "");
     if (!token)
@@ -10,10 +10,16 @@ function auth(requiredRole) {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       req.user = decoded;
-      if (requiredRole && decoded.role !== requiredRole) {
-        return res
-          .status(403)
-          .json({ message: "Forbidden: insufficient role" });
+      if (requiredRoles) {
+        // Allow string or array
+        const allowed = Array.isArray(requiredRoles)
+          ? requiredRoles
+          : [requiredRoles];
+        if (!allowed.includes(decoded.role)) {
+          return res
+            .status(403)
+            .json({ message: "Forbidden: insufficient role" });
+        }
       }
       next();
     } catch (err) {

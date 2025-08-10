@@ -1,0 +1,52 @@
+openapi: 3.0.0
+info:
+  title: Property Management API
+  version: 1.0.0
+  description: API documentation for the Property Management System
+servers:
+  - url: /api
+paths:
+  /auth/register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                role:
+                  type: string
+                  enum: [admin, manager, tenant, owner]
+      responses:
+        "201":
+          description: User registered
+        "400":
+          description: Validation error
+  /auth/login:
+    post:
+      summary: Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          description: Login successful
+        "400":
+          description: Invalid credentials
+# ... Add more endpoints as needed

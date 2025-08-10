@@ -133,7 +133,9 @@ export default function GetStarted() {
           <div className="flex items-center gap-2">
             <Link href="/">
               <Image
-                src="/assets/images/logo/logo.png"
+                // src="/assets/images/logo/logo.png"
+                src="\frontend\src\app\favicon.ico"
+
                 alt="Logo"
                 width={48}
                 height={48}
@@ -203,7 +205,7 @@ export default function GetStarted() {
             tenants, collecting rent and ensuring legal compliance.
           </p>
           <Link
-            href="#"
+            href="/dashboard"
             className="inline-block px-6 py-2 bg-[#2196f3] text-white font-semibold rounded shadow hover:bg-[#1769aa] transition border border-[#2196f3] hover:border-[#1769aa]"
             style={{
               boxShadow: "0 2px 8px rgba(0,0,0,0.12)",

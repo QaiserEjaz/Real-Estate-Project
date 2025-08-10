@@ -122,16 +122,44 @@ export default function RegisterPage() {
         </div>
       </div>
       {/* Right: Image/Blue Gradient */}
-      <div className="hidden md:flex flex-1 items-center justify-center bg-gradient-to-br from-[#2176d2] to-[#1a7cbc] relative">
+      <div
+        className="hidden md:flex flex-1 items-center justify-center relative"
+        style={{ background: "none", overflow: "hidden" }}
+      >
         <Image
-          src="/assets/images/auth/dash-mockup.jpg"
-          alt="Dashboard Mockup"
-          width={600}
-          height={400}
-          className="rounded-xl shadow-2xl"
-          style={{ maxWidth: "80%", maxHeight: "80%" }}
+          src="/assets/images/auth/auth-bg.jpg"
+          alt="Background Hexagons"
+          fill
+          style={{ objectFit: "cover", zIndex: 0 }}
         />
-        {/* Optionally add overlay hexagons or background shapes here */}
+        <div
+          className="absolute inset-0 flex items-center justify-end z-10"
+          style={{ pointerEvents: "none" }}
+        >
+          <div
+            style={{
+              position: "relative",
+              right: "-190px", // push image further right, so it's cut off
+              height: "100%",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Image
+              src="/assets/images/landing/auth_page.png"
+              alt="Dashboard Mockup"
+              width={900}
+              height={600}
+              className="rounded-xl shadow-2xl"
+              style={{
+                maxHeight: "90%",
+                width: "auto",
+                objectFit: "contain",
+                boxShadow: "0 8px 32px rgba(0,0,0,0.18)",
+              }}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
