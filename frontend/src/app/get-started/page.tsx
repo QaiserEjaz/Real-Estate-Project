@@ -72,31 +72,28 @@ function BenefitsCarousel() {
       {/* Cards */}
       <div className="flex gap-8 justify-center items-stretch w-full">
         {benefitsData
-          .slice(startIdx, startIdx + visibleCount)
-          .map((item) => (
-            <div
-              key={item.title}
-              className="bg-white rounded-lg shadow p-6 w-[340px] flex flex-col items-center border border-gray-100 hover:shadow-lg transition"
-              style={{ minHeight: 370 }}
-            >
-              <div className="mb-4">
-                <Image
-                  src={item.img}
-                  alt={item.title}
-                  width={320}
-                  height={180}
-                  className="img-fluid rounded"
-                  style={{ objectFit: "cover" }}
-                />
-              </div>
-              <div className="text-center">
-                <h5 className="font-bold text-xl mb-2">{item.title}</h5>
-                <p className="text-gray-600 text-center text-base">
-                  {item.desc}
-                </p>
-              </div>
+        .slice(startIdx, startIdx + visibleCount).map((item) => (
+          <div
+            key={item.title}
+            className="bg-white rounded-lg shadow p-6 w-[340px] flex flex-col items-center border border-gray-100 hover:shadow-lg transition"
+            style={{ minHeight: 370 }}
+          >
+            <div className="mb-4">
+              <Image
+                src={item.img}
+                alt={item.title}
+                width={320}
+                height={180}
+                className="img-fluid rounded"
+                style={{ objectFit: "cover" }}
+              />
             </div>
-          ))}
+            <div className="text-center">
+              <h5 className="font-bold text-xl mb-2">{item.title}</h5>
+              <p className="text-gray-600 text-center text-base">{item.desc}</p>
+            </div>
+          </div>
+        ))}
       </div>
       {/* Right Button */}
       <button
@@ -133,9 +130,7 @@ export default function GetStarted() {
           <div className="flex items-center gap-2">
             <Link href="/">
               <Image
-                // src="/assets/images/logo/logo.png"
-                src="\frontend\src\app\favicon.ico"
-
+                src="/assets/images/logo/logo.png"
                 alt="Logo"
                 width={48}
                 height={48}
@@ -146,32 +141,38 @@ export default function GetStarted() {
             <span className="font-bold text-xl text-white">Smart Tenant</span>
           </div>
           <nav className="flex gap-6 items-center">
-            <a className="text-white font-medium hover:underline" href="#demos">
+            <Link
+              className="text-white font-medium hover:underline"
+              href="#home"
+            >
               Home
-            </a>
-            <a
+            </Link>
+            <Link
               className="text-white font-medium hover:underline"
               href="#pricing"
             >
               Pricing
-            </a>
-            <a
+            </Link>
+            <Link
               className="text-white font-medium hover:underline"
               href="#features"
             >
               Features
-            </a>
-            <a className="text-white font-medium hover:underline" href="#faq">
-              FAQs
-            </a>
+            </Link>
             <Link
-              className="bg-[#2196f3] hover:bg-[#1769aa] text-white font-semibold px-4 py-2 rounded transition"
+              className="text-white font-medium hover:underline"
+              href="#faq"
+            >
+              FAQs
+            </Link>
+            <Link
+              className="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-cyan-600 hover:to-blue-700 text-white font-semibold px-4 py-2 rounded transition border border-blue-600 hover:border-cyan-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
               href="/login"
             >
               Login
             </Link>
             <Link
-              className="bg-[#2196f3] hover:bg-[#1769aa] text-white font-semibold px-4 py-2 rounded transition"
+              className="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-cyan-600 hover:to-blue-700 text-white font-semibold px-4 py-2 rounded transition border border-blue-600 hover:border-cyan-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
               href="/register"
             >
               Register
@@ -198,7 +199,7 @@ export default function GetStarted() {
           >
             Smart Tenant - Property Management System
           </h1>
-          <p className="text-white text-lg mb-8 max-w-xl opacity-90">
+          <p className="text-white text-lg mb-8 max-w-xl ">
             Property management refers to the administration, operation, and
             oversight of real estate properties on behalf of property owners. It
             involves various tasks such as marketing rental properties, finding
@@ -206,25 +207,37 @@ export default function GetStarted() {
           </p>
           <Link
             href="/dashboard"
-            className="inline-block px-6 py-2 bg-[#2196f3] text-white font-semibold rounded shadow hover:bg-[#1769aa] transition border border-[#2196f3] hover:border-[#1769aa]"
+            className="inline-flex items-center px-6 py-2 bg-[#2196f3] text-white font-semibold rounded transition border hover:bg-[#1769aa] hover:border-[#2196f3] focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50 text-base shadow"
             style={{
               boxShadow: "0 2px 8px rgba(0,0,0,0.12)",
-              fontSize: "1rem",
             }}
           >
-            <i className="fa fa-play mr-2" style={{ color: "#fff" }} /> Get
-            Started
+            <svg
+              className="mr-2"
+              width="18"
+              height="18"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              viewBox="0 0 24 24"
+            >
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+              <path d="M8 12h8M8 12l3-3m-3 3l3 3" />
+            </svg>
+            Get Started
           </Link>
         </div>
         <div className="flex-1 flex justify-end items-center z-10 mt-10 md:mt-0 max-w-xl">
-          {/* <Image
+          <Image
             src="/assets/images/landing/1.png"
             alt="Dashboard"
             width={420}
             height={260}
             className="rounded-xl shadow-2xl border border-white/10"
             style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.18)" }}
-          /> */}
+          />
         </div>
       </section>
       {/* Benefits Section - Carousel */}

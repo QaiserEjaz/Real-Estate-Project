@@ -12,7 +12,9 @@ router.post(
     body("password")
       .isLength({ min: 6 })
       .withMessage("Password must be at least 6 characters"),
-    body("role").optional().isIn(["admin", "manager", "tenant", "owner"]),
+    body("role")
+      .optional()
+      .isIn(["admin", "manager", "tenant", "owner", "maintainer"]),
   ],
   (req, res, next) => {
     const errors = validationResult(req);
