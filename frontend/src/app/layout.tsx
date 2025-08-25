@@ -1,6 +1,8 @@
 "use client";
 // import type { Metadata } from "next";
+
 import "./globals.css";
+import Providers from "./providers";
 
 export default function RootLayout({
   children,
@@ -10,7 +12,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-gray-100 min-h-screen">
-        <main>{children}</main>
+        <Providers>
+          <main>{children}</main>
+        </Providers>
       </body>
     </html>
   );

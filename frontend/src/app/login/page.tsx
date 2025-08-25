@@ -1,12 +1,36 @@
 "use client";
-import React from "react";
-import { useState } from "react";
+"use client";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "../../store";
+import { RootState } from "../../store";
+import { login as loginThunk } from "../../features/auth/authSlice";
 import Image from "next/image";
 import Link from "next/link";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const { user, loading, error } = useSelector(
+    (state: RootState) => state.auth
+  );
+
+  useEffect(() => {
+    if (user) {
+      router.replace("/dashboard");
+    }
+  }, [user, router]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    dispatch(loginThunk({ email, password }));
+  };
+
   return (
     <div
       className="min-h-screen w-full flex"
@@ -24,7 +48,7 @@ export default function LoginPage() {
           >
             Welcome To Rentproperty
           </h2>
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label
                 htmlFor="email"
@@ -40,6 +64,8 @@ export default function LoginPage() {
                 placeholder="Enter Your Email"
                 className="w-full px-3 py-2 border border-gray-300 rounded-sm bg-[#f8f9fa] text-[15px] text-gray-900 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-300 transition"
                 style={{ fontFamily: "'Segoe UI', Arial, sans-serif" }}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div>
@@ -58,6 +84,8 @@ export default function LoginPage() {
                   placeholder="Enter Your Password"
                   className="w-full px-3 py-2 border border-gray-300 rounded-sm bg-[#f8f9fa] text-[15px] text-gray-900 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-300 pr-10 transition"
                   style={{ fontFamily: "'Segoe UI', Arial, sans-serif" }}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
                 <button
                   type="button"
@@ -89,6 +117,9 @@ export default function LoginPage() {
                 Forgot your password?
               </Link>
             </div>
+            {error && (
+              <div className="text-red-600 text-sm text-center">{error}</div>
+            )}
             <button
               type="submit"
               className="w-full bg-blue-600 text-white py-2 rounded-sm font-semibold hover:bg-blue-700 transition flex items-center justify-center gap-2 shadow-sm text-[16px]"
@@ -96,12 +127,13 @@ export default function LoginPage() {
                 fontFamily: "'Segoe UI', Arial, sans-serif",
                 boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
               }}
+              disabled={loading}
             >
               <i
                 className="fa fa-sign-in mr-2"
                 style={{ fontSize: "1.1rem", color: "#fff" }}
-              />{" "}
-              Login
+              />
+              {loading ? "Logging in..." : "Login"}
             </button>
           </form>
           <div className="mt-10 text-center text-gray-700 text-[15px]">

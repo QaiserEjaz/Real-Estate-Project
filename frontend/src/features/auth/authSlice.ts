@@ -1,5 +1,18 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../../api/axios";
+import type { AxiosError } from "axios";
+
+// Type guard for axios error
+function isAxiosError(
+  error: unknown
+): error is AxiosError<{ message?: string }> {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "isAxiosError" in error &&
+    (error as AxiosError).isAxiosError === true
+  );
+}
 
 export interface AuthState {
   user: null | {
@@ -24,10 +37,13 @@ export const login = createAsyncThunk(
   "auth/login",
   async (data: { email: string; password: string }, { rejectWithValue }) => {
     try {
-      const res = await axios.post("/api/auth/login", data);
+  const res = await axios.post("/api/auth/login", data);
       return res.data;
-    } catch (err: any) {
-      return rejectWithValue(err.response?.data?.message || "Login failed");
+    } catch (err: unknown) {
+      if (isAxiosError(err) && err.response?.data?.message) {
+        return rejectWithValue(err.response.data.message);
+      }
+      return rejectWithValue("Login failed");
     }
   }
 );
@@ -39,12 +55,13 @@ export const register = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const res = await axios.post("/api/auth/register", data);
+  const res = await axios.post("/api/auth/register", data);
       return res.data;
-    } catch (err: any) {
-      return rejectWithValue(
-        err.response?.data?.message || "Registration failed"
-      );
+    } catch (err: unknown) {
+      if (isAxiosError(err) && err.response?.data?.message) {
+        return rejectWithValue(err.response.data.message);
+      }
+      return rejectWithValue("Registration failed");
     }
   }
 );
@@ -56,6 +73,9 @@ const authSlice = createSlice({
     logout(state) {
       state.user = null;
       state.token = null;
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('token');
+      }
     },
   },
   extraReducers: (builder) => {
@@ -68,6 +88,10 @@ const authSlice = createSlice({
         state.loading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
+        // Persist token to localStorage for axios interceptor
+        if (typeof window !== 'undefined' && action.payload.token) {
+          localStorage.setItem('token', action.payload.token);
+        }
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;

@@ -1,5 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
+import { RootState } from "../../store";
 import { languages, getTranslation } from "../../locales";
 
 import Sidebar from "../../components/Sidebar";
@@ -38,8 +41,14 @@ type Summary = {
 export default function DashboardPage() {
   const t = getTranslation(languages[0].code);
 
-  // Example user (replace with real user from state)
-  const user = { name: "Manager", role: "manager" };
+  const router = useRouter();
+  const user = useSelector((state: RootState) => state.auth.user);
+
+  useEffect(() => {
+    if (!user) {
+      router.replace("/login");
+    }
+  }, [user, router]);
 
   // Dashboard data state
   const [summary, setSummary] = useState<Summary | null>(null);
@@ -58,9 +67,9 @@ export default function DashboardPage() {
       setError(null);
       try {
         const [summaryRes, usersRes, paymentsRes] = await Promise.all([
-          axios.get("/reports/summary"),
-          axios.get("/reports/users-by-month"),
-          axios.get("/reports/payments-by-month"),
+          axios.get("/api/reports/summary"),
+          axios.get("/api/reports/users-by-month"),
+          axios.get("/api/reports/payments-by-month"),
         ]);
         setSummary(summaryRes.data);
         setUsersByMonth(usersRes.data);
@@ -91,6 +100,9 @@ export default function DashboardPage() {
     fetchDashboardData();
   }, []);
 
+  if (!user) {
+    return null;
+  }
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
